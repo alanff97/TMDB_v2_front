@@ -13,6 +13,8 @@ import {
   Menu,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useSearch } from '../hooks/useSearch';
+import { useMovies } from '../hooks/useMovies';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,10 +58,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Account', 'Favorites', 'Logout'];
 
 export default function Navbar() {
+  const { search, updateSearch } = useSearch();
+  const { getMovies } = useMovies({ search });
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getMovies();
+  };
+  const handleChange = (event) => {
+    updateSearch(event.target.value);
+  };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -84,16 +97,18 @@ export default function Navbar() {
               TMDB
             </Typography>
           </Box>
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          <form onSubmit={handleSubmit}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                value={search || ''}
+                onChange={handleChange}
+              />
+            </Search>
+          </form>
 
           <Box sx={{ flexGrow: 0, marginLeft: '20px' }}>
             <Tooltip title="Open settings">

@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useSearch() {
-  const [search, updateSearch] = useState('');
+  const [search, updateSearch] = useState('avengers');
   const [error, setError] = useState(null);
-  const isFirstInput = useRef(true);
+
   useEffect(() => {
-    if (isFirstInput.current) {
+    /* if (isFirstInput.current) {
       isFirstInput.current = search === ''; // initial state of search "" so its true
       return;
-    }
+    } */
     if (search === '') {
       setError('No se puede buscar una película vacía');
       return;
@@ -19,5 +19,5 @@ export function useSearch() {
     }
     setError(null);
   }, [search]);
-  return { search, updateSearch, error, isFirstInput };
+  return { search, updateSearch, error };
 }
