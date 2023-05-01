@@ -37,3 +37,8 @@ form {
 .movie img {
   border-radius: 8px;
 }
+
+.movie-card-container {
+  width: 250px;
+  height: 400px;
+}

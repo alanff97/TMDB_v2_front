@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export function useSearch() {
-  const [search, updateSearch] = useState('avengers');
+  const [search, updateSearch] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
