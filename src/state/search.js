@@ -1,6 +1,6 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
 
-const initialState = '';
+const initialState = false;
 
 export const setSearchKey = createAction('SET_SEARCH_KEY');
 
