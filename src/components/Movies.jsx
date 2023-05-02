@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import MovieCard from '../commons/MovieCard';
-import '../App.css';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,22 +15,25 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export function ListOfMovies({ movies }) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 3, sm: 8, md: 12 }}
-        sx={{ margin: 0 }}
-      >
-        {movies?.map((movie) => (
-          <Grid xs={2} sm={4} md={4} key={movie.id}>
-            <MovieCard movie={movie} />
-          </Grid>
-        ))}
-      </Grid>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 16 }}
+          sx={{ margin: 0 }}
+        >
+          {movies?.map((movie) => (
+            <Grid xs={2} sm={4} md={4} key={movie.id}>
+              <MovieCard movie={movie} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 }
+
 ListOfMovies.propTypes = {
   movies: PropTypes.arrayOf(
     PropTypes.shape({

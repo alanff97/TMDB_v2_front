@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import {
   AppBar,
@@ -11,10 +12,13 @@ import {
   Avatar,
   MenuItem,
   Menu,
+  Button,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSearch } from '../hooks/useSearch';
 import { useMovies } from '../hooks/useMovies';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,6 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const settings = ['Account', 'Favorites', 'Logout'];
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const { search, updateSearch } = useSearch();
   const { getMovies } = useMovies({ search });
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -68,6 +74,7 @@ export default function Navbar() {
   const handleSubmit = (event) => {
     event.preventDefault();
     getMovies();
+    navigate('/search');
   };
   const handleChange = (event) => {
     updateSearch(event.target.value);
@@ -111,33 +118,55 @@ export default function Navbar() {
           </form>
 
           <Box sx={{ flexGrow: 0, marginLeft: '20px' }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {user.email ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: 'none', color: 'white' }}
+                >
+                  <Button color="inherit">Login</Button>
+                </Link>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: 'none', color: 'white' }}
+                >
+                  <Button color="inherit">Register</Button>
+                </Link>
+              </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
