@@ -1,27 +1,65 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import Input from '../commons/Input';
+import { customMessage } from '../utils/customMessage';
 
 export default function Register() {
+  const initialFormState = {
+    email: 'email@example.com',
+    password: '******',
+    name: 'name',
+    lastname: 'lastName',
+  };
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState(initialFormState);
+  const conditionalSubmit =
+    formData.email !== '' &&
+    formData.name !== '' &&
+    formData.password.length > 6 &&
+    formData.lastname !== '';
+
+  const handleEmail = (email) => {
+    // eslint-disable-next-line
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return true;
+    }
+    return false;
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleShowPassword = () => setShowPassword((prev) => !prev);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = Object.fromEntries(new window.FormData(event.currentTarget));
-    console.log('data normal', data);
+    const validEmail = handleEmail(formData.email);
+    let response;
 
-    try {
-      const dataRegister = await axios.post('/api/user/register', {
-        ...data,
-      });
-    } catch (error) {}
+    if (validEmail) {
+      try {
+        response = await axios.post('/api/user/register', formData);
+        customMessage('success', response.data);
+        navigate('/login');
+      } catch (error) {
+        return customMessage('error', 'The email is already registered');
+      }
+    } else {
+      return customMessage('error', 'The email is not valid');
+    }
   };
 
   return (
@@ -49,45 +87,51 @@ export default function Register() {
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="name"
+              <Input
                 required
-                fullWidth
-                id="name"
+                name="name"
                 label="First Name"
-                autoFocus
+                handleChange={handleChange}
+                type="text"
+                error={formData.name === ''}
+                helperText={formData.name === '' && 'Required'}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastname"
-                label="Last Name"
+              <Input
                 name="lastname"
-                autoComplete="family-name"
+                label="Last Name"
+                handleChange={handleChange}
+                type="text"
+                required
+                error={formData.lastname === ''}
+                helperText={formData.lastname === '' && 'Required'}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <Input
                 required
-                fullWidth
-                id="email"
-                label="Email Address"
                 name="email"
-                autoComplete="email"
+                label="Email Adress"
+                handleChange={handleChange}
+                type="email"
+                error={formData.email === ''}
+                helperText={formData.email === '' && 'Required'}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
+              <Input
                 name="password"
                 label="Password"
-                type="password"
                 id="password"
-                autoComplete="new-password"
+                type={showPassword ? 'text' : 'password'}
+                handleChange={handleChange}
+                handleShowPassword={handleShowPassword}
+                error={formData.password.length < 6}
+                helperText={
+                  formData.password.length < 6 &&
+                  'The password must be at least 6 characters'
+                }
               />
             </Grid>
           </Grid>
@@ -96,14 +140,13 @@ export default function Register() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!conditionalSubmit}
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/login" style={{ textDecoration: 'none' }}>
-                Already have an account? Sign in
-              </Link>
+              <Link to="/login">{'Already have an account? Sign in'}</Link>
             </Grid>
           </Grid>
         </Box>
