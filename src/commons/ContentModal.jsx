@@ -1,7 +1,9 @@
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { useModal } from '../hooks/useModal';
 
 const style = {
   position: 'absolute',
@@ -15,13 +17,13 @@ const style = {
   p: 4,
 };
 
-export default function ContentModal({ openContent, handleClose, content }) {
+export default function ContentModal({ content, onClose }) {
+  console.log(content);
   return (
     <div>
-      <Button onClick={openContent}>Open modal</Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={Boolean(content)}
+        onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

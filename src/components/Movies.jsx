@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export function ListOfMovies({ content }) {
+export function ListOfMovies({ content, onClick }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Box sx={{ flexGrow: 1 }}>
@@ -26,7 +26,7 @@ export function ListOfMovies({ content }) {
         >
           {content?.map((content) => (
             <Grid xs={2} sm={4} md={4} key={content.id}>
-              <MovieCard content={content} />
+              <MovieCard content={content} onClick={() => onClick(content)} />
             </Grid>
           ))}
         </Grid>
@@ -44,15 +44,20 @@ ListOfMovies.propTypes = {
       image: PropTypes.string.isRequired,
     })
   ).isRequired,
+  onClick: PropTypes.func,
 };
 
 export function NoMoviesResult() {
   return <p>No se encontraron películas</p>;
 }
 
-export function Movie({ content }) {
+export function Movie({ content, onClick }) {
   const hasMovies = content?.length > 0;
-  return hasMovies ? <ListOfMovies content={content} /> : <NoMoviesResult />;
+  return hasMovies ? (
+    <ListOfMovies content={content} onClick={onClick} />
+  ) : (
+    <NoMoviesResult />
+  );
 }
 
 Movie.propTypes = {
@@ -64,4 +69,5 @@ Movie.propTypes = {
       image: PropTypes.string.isRequired,
     })
   ).isRequired,
+  onClick: PropTypes.func,
 };

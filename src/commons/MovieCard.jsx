@@ -1,22 +1,24 @@
 import PropTypes from 'prop-types';
 
-import { Box } from '@mui/material';
+import { Box, CardActionArea } from '@mui/material';
 
-export default function MovieCard({ content }) {
+export default function MovieCard({ content, onClick }) {
   return (
-    <Box sx={{ maxWidth: 345, position: 'relative' }}>
-      <Box
-        component="img"
-        src={content.image}
-        alt={content.title || content.name}
-        sx={{
-          maxWidth: '100%',
-          maxHeight: 500,
-          objectFit: 'cover',
-          borderRadius: '8px',
-        }}
-      />
-    </Box>
+    <CardActionArea onClick={onClick}>
+      <Box sx={{ maxWidth: 345, position: 'relative' }}>
+        <Box
+          component="img"
+          src={content.image}
+          alt={content.title || content.name}
+          sx={{
+            maxWidth: '100%',
+            maxHeight: 500,
+            objectFit: 'cover',
+            borderRadius: '8px',
+          }}
+        />
+      </Box>
+    </CardActionArea>
   );
 }
 
@@ -28,4 +30,5 @@ MovieCard.propTypes = {
     release: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
   }).isRequired,
+  onClick: PropTypes.func,
 };
