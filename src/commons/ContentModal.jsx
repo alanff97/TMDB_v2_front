@@ -1,9 +1,7 @@
-import * as React from 'react';
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useModal } from '../hooks/useModal';
 
 const style = {
   position: 'absolute',
@@ -18,24 +16,38 @@ const style = {
 };
 
 export default function ContentModal({ content, onClose }) {
-  console.log(content);
   return (
-    <div>
-      <Modal
-        open={Boolean(content)}
-        onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
+    <>
+      {content ? (
+        <div>
+          <Modal
+            open={Boolean(content)}
+            onClose={onClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {content.title || content.name}
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              </Typography>
+            </Box>
+          </Modal>
+        </div>
+      ) : null}
+    </>
   );
 }
+ContentModal.propTypes = {
+  content: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    name: PropTypes.string,
+    release: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    // otras propiedades aquí
+  }),
+  onClose: PropTypes.func,
+};
