@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 
 function App() {
   const movies = useSelector((state) => state.movies);
+
   return (
     <div className="page">
       <main>

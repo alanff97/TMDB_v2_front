@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../state/movies';
+import { useLocation } from 'react-router-dom';
 
 export function useMovies({ search }) {
   const responseMovie = useSelector((state) => state.movie || []);
@@ -25,7 +26,7 @@ export function useMovies({ search }) {
           },
         }
       );
-      console.log(response.data.results);
+
       const mappedMovies = response.data.results?.map((movie) => ({
         id: movie.id,
         title: movie.title,
@@ -45,9 +46,16 @@ export function useMovies({ search }) {
     }
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     getMovies();
-  }, []);
+  }, []); */
+
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      getMovies();
+    }
+  }, [location]);
 
   return { movies, getMovies };
 }
