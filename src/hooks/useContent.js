@@ -79,5 +79,5 @@ export function useContent({ search }) {
     }
   }, [mediaType, location]);
 
-  return { content, useContent };
+  return { content, getContent };
 }
