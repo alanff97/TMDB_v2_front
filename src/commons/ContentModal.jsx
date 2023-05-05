@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Grid } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
+
 import { Link } from 'react-router-dom';
 
 const style = {
@@ -18,6 +21,9 @@ const style = {
 };
 
 export default function ContentModal({ content, onClose }) {
+  const { breakpoints } = useTheme();
+  const isMd = useMediaQuery(breakpoints.up('md'));
+
   return (
     <>
       {content ? (
@@ -44,11 +50,11 @@ export default function ContentModal({ content, onClose }) {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
               border: '2px solid #000',
-              boxShadow: 24,
+              boxShadow: 50,
             }}
           >
             <img
-              src={content.backdrop_path}
+              src={isMd ? content.backdrop_path : content.image}
               alt={content.title || content.name}
               style={{
                 position: 'absolute',
@@ -72,8 +78,8 @@ export default function ContentModal({ content, onClose }) {
               }}
             >
               <Typography
-                component="h2"
-                variant="h5"
+                component="h1"
+                variant="h4"
                 color="inherit"
                 sx={{ mr: 2, ml: 1 }}
                 gutterBottom
@@ -81,7 +87,7 @@ export default function ContentModal({ content, onClose }) {
                 {content.title || content.name}
               </Typography>
               <Typography
-                variant="body1"
+                variant="subtitle1"
                 color="inherit"
                 paragraph
                 sx={{ mr: 2, ml: 1 }}
