@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
 
-export default function MovieCard({ movie }) {
+export default function MovieCard({ content }) {
   return (
     <Box sx={{ maxWidth: 345, position: 'relative' }}>
       <Box
         component="img"
-        src={movie.image}
-        alt={movie.title}
+        src={content.image}
+        alt={content.title || content.name}
         sx={{
           maxWidth: '100%',
           maxHeight: 500,
@@ -21,9 +21,10 @@ export default function MovieCard({ movie }) {
 }
 
 MovieCard.propTypes = {
-  movie: PropTypes.shape({
+  content: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string,
+    name: PropTypes.string,
     release: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
   }).isRequired,

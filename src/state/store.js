@@ -11,7 +11,7 @@ import mediaReducer from './mediaType';
 const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   reducer: {
-    movies: contentReducer,
+    content: contentReducer,
     mediaType: mediaReducer,
     search: searchReducer,
     user: userReducer,

@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export function ListOfMovies({ movies }) {
+export function ListOfMovies({ content }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Box sx={{ flexGrow: 1 }}>
@@ -24,9 +24,9 @@ export function ListOfMovies({ movies }) {
           columns={{ xs: 4, sm: 8, md: 16 }}
           sx={{ margin: 0 }}
         >
-          {movies?.map((movie) => (
-            <Grid xs={2} sm={4} md={4} key={movie.id}>
-              <MovieCard movie={movie} />
+          {content?.map((content) => (
+            <Grid xs={2} sm={4} md={4} key={content.id}>
+              <MovieCard content={content} />
             </Grid>
           ))}
         </Grid>
@@ -36,7 +36,7 @@ export function ListOfMovies({ movies }) {
 }
 
 ListOfMovies.propTypes = {
-  movies: PropTypes.arrayOf(
+  content: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string,
@@ -50,13 +50,13 @@ export function NoMoviesResult() {
   return <p>No se encontraron películas</p>;
 }
 
-export function Movie({ movies }) {
-  const hasMovies = movies?.length > 0;
-  return hasMovies ? <ListOfMovies movies={movies} /> : <NoMoviesResult />;
+export function Movie({ content }) {
+  const hasMovies = content?.length > 0;
+  return hasMovies ? <ListOfMovies content={content} /> : <NoMoviesResult />;
 }
 
 Movie.propTypes = {
-  movies: PropTypes.arrayOf(
+  content: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string,
