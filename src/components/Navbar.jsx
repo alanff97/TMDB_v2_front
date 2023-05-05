@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import {
   AppBar,
@@ -18,7 +18,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useSearch } from '../hooks/useSearch';
 import { useMovies } from '../hooks/useMovies';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

@@ -1,63 +1,85 @@
-import { useNavigate } from 'react-router';
-import axios from 'axios';
-import { setUser } from '../state/user';
-import { useInput } from '../hooks/useInput';
-import { log, success, error } from '../utils/logs';
-import { useDispatch } from 'react-redux';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
-const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const email = useInput('email');
-  const password = useInput('password');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    log('login attempt...');
-    try {
-      const { data } = await axios.post('/api/user/login', {
-        email: email.value,
-        password: password.value,
-      });
-
-      const action = setUser(data);
-      dispatch(action);
-      success(`logged user ${data.email}`);
-      navigate('/collection/discover');
-    } catch ({ response }) {
-      error(response.status, response.statusText);
-    }
+export default function Login() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <div className="box">
-      <form onSubmit={handleSubmit} className="box">
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control">
-            <input
-              className="input"
-              type="email"
-              placeholder="Email"
-              {...email}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label className="label">Password</label>
-          <div className="control">
-            <input
-              className="input"
-              type="password"
-              placeholder="********"
-              {...password}
-            />
-          </div>
-        </div>
-        <button className="button is-primary">Sign in</button>
-      </form>
-    </div>
-  );
-};
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1, flexDirection: 'column', width: '300px' }}
+        >
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
 
-export default Login;
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link href="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
+  );
+}
