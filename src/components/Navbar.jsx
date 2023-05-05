@@ -26,6 +26,8 @@ import { useMovies } from '../hooks/useMovies';
 
 import { customMessage } from '../utils/customMessage';
 
+import { setMediaType } from '../state/mediaType';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -60,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '15ch',
       '&:focus': {
         width: '20ch',
       },
@@ -72,6 +74,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const mediaType = useSelector((state) => state.mediaType);
   const { search, updateSearch } = useSearch();
   const { getMovies } = useMovies({ search });
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -88,7 +91,15 @@ export default function Navbar() {
     event.preventDefault();
     getMovies();
     updateSearch('');
-    navigate('/search');
+    navigate(`/${mediaType}/search`);
+  };
+  const handleClickTv = (event) => {
+    event.preventDefault();
+    dispatch(setMediaType('tv'));
+  };
+  const handleClickMovie = (event) => {
+    event.preventDefault();
+    dispatch(setMediaType('movie'));
   };
   const handleChange = (event) => {
     updateSearch(event.target.value);
@@ -140,15 +151,16 @@ export default function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Discover</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Movies</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Tv Shows</Typography>
-              </MenuItem>
+              <Link to="/movie">
+                <MenuItem onClick={handleClickMovie}>
+                  <Typography textAlign="center">Movies</Typography>
+                </MenuItem>
+              </Link>
+              <Link to="/tv">
+                <MenuItem onClick={handleClickTv}>
+                  <Typography textAlign="center">Tv Shows</Typography>
+                </MenuItem>
+              </Link>
             </Menu>
           </Box>
           <Box sx={{ mr: 1, flexGrow: 1 }}>
@@ -174,18 +186,19 @@ export default function Navbar() {
             </Link>
           </Box>
           <Box sx={{ flexGrow: 6, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+            <Link
+              to="/movie"
+              style={{ textDecoration: 'none', color: 'white' }}
             >
-              Movies
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              TV Shows
-            </Button>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                Movies
+              </Button>
+            </Link>
+            <Link to="/tv" style={{ textDecoration: 'none', color: 'white' }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                TV Shows
+              </Button>
+            </Link>
           </Box>
           <form onSubmit={handleSubmit}>
             <Search>
@@ -193,7 +206,7 @@ export default function Navbar() {
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
-                placeholder="Search…"
+                placeholder={`Search ${mediaType}...`}
                 value={search || ''}
                 onChange={handleChange}
               />
