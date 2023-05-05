@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -19,23 +21,76 @@ export default function ContentModal({ content, onClose }) {
   return (
     <>
       {content ? (
-        <div>
-          <Modal
-            open={Boolean(content)}
-            onClose={onClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+        <Modal
+          open={Boolean(content)}
+          onClose={onClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{ width: '100%', height: '100%' }}
+        >
+          <Grid
+            container
+            sx={{
+              position: 'absolute',
+              backgroundColor: 'grey.800',
+              top: '50%',
+              left: '50%',
+              height: '80%',
+              width: '80%',
+              transform: 'translate(-50%, -50%)',
+              color: '#fff',
+              mb: 4,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              border: '2px solid #000',
+              boxShadow: 24,
+            }}
           >
-            <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+            <img
+              src={content.backdrop_path}
+              alt={content.title || content.name}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: -1,
+                opacity: 0.5,
+              }}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                position: 'relative',
+                p: { xs: 3, md: 6 },
+                pr: { md: 0 },
+                textAlign: 'left',
+              }}
+            >
+              <Typography
+                component="h2"
+                variant="h5"
+                color="inherit"
+                sx={{ mr: 2, ml: 1 }}
+                gutterBottom
+              >
                 {content.title || content.name}
               </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              <Typography
+                variant="body1"
+                color="inherit"
+                paragraph
+                sx={{ mr: 2, ml: 1 }}
+              >
+                {content.overview}
               </Typography>
             </Box>
-          </Modal>
-        </div>
+          </Grid>
+        </Modal>
       ) : null}
     </>
   );
@@ -45,9 +100,11 @@ ContentModal.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string,
     name: PropTypes.string,
+    overview: PropTypes.string,
     release: PropTypes.string.isRequired,
+    backdrop_path: PropTypes.string,
     image: PropTypes.string.isRequired,
     // otras propiedades aquí
   }),
-  onClose: PropTypes.func,
+  onClose: PropTypes,
 };
