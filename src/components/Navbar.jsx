@@ -22,7 +22,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSearch } from '../hooks/useSearch';
-import { useMovies } from '../hooks/useMovies';
+import { useContent } from '../hooks/useContent';
 
 import { customMessage } from '../utils/customMessage';
 
@@ -76,7 +76,7 @@ export default function Navbar() {
   const user = useSelector((state) => state.user);
   const mediaType = useSelector((state) => state.mediaType);
   const { search, updateSearch } = useSearch();
-  const { getMovies } = useMovies({ search });
+  const { getContent } = useContent({ search });
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -89,7 +89,7 @@ export default function Navbar() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    getMovies();
+    getContent();
     updateSearch('');
     navigate(`/${mediaType}/search`);
   };

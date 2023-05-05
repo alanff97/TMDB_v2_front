@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMovies } from '../state/movies';
+import { setContent } from '../state/content';
 import { useLocation } from 'react-router-dom';
 
-export function useMovies({ search }) {
-  const responseMovie = useSelector((state) => state.movie || []);
+export function useContent({ search }) {
+  const responseContent = useSelector((state) => state.movie || []);
   const mediaType = useSelector((state) => state.mediaType);
   const dispatch = useDispatch();
   const imagePath = 'https://image.tmdb.org/t/p/w500/';
   const imageBackPath = 'https://image.tmdb.org/t/p/original/';
 
-  const movies = responseMovie || [];
+  const content = responseContent || [];
 
-  const getMovies = async () => {
+  const getContent = async () => {
     let action;
     try {
       const type = search ? 'search' : 'discover';
@@ -41,7 +41,7 @@ export function useMovies({ search }) {
           stars: shows.vote_average,
           backdrop_path: imageBackPath + shows.backdrop_path,
         }));
-        action = setMovies(mappedShows);
+        action = setContent(mappedShows);
         dispatch(action);
       } else {
         const mappedMovies = response.data.results?.map((movie) => ({
@@ -56,7 +56,7 @@ export function useMovies({ search }) {
           backdrop_path: imageBackPath + movie.backdrop_path,
         }));
 
-        action = setMovies(mappedMovies);
+        action = setContent(mappedMovies);
         dispatch(action);
       }
     } catch (error) {
@@ -75,9 +75,9 @@ export function useMovies({ search }) {
       location.pathname === '/movie' ||
       location.pathname === '/tv'
     ) {
-      getMovies();
+      getContent();
     }
   }, [mediaType, location]);
 
-  return { movies, getMovies };
+  return { content, useContent };
 }
