@@ -28,6 +28,7 @@ export function useContent({ search }) {
           },
         }
       );
+      console.log(response);
 
       if (media === 'tv') {
         const mappedShows = response.data.results?.map((shows) => ({
@@ -40,6 +41,7 @@ export function useContent({ search }) {
           release: shows.first_air_date.split('-')[0],
           stars: shows.vote_average,
           backdrop_path: imageBackPath + shows.backdrop_path,
+          type: 'tv',
         }));
         action = setContent(mappedShows);
         dispatch(action);
@@ -54,6 +56,7 @@ export function useContent({ search }) {
           release: movie.release_date.split('-')[0],
           stars: movie.vote_average,
           backdrop_path: imageBackPath + movie.backdrop_path,
+          type: 'movie',
         }));
 
         action = setContent(mappedMovies);

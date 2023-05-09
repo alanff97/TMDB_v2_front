@@ -135,7 +135,7 @@ export default function Navbar() {
             </IconButton>
             <Menu
               id="menu-appbar"
-              anchorEl={anchorElNav}
+              anchorEl={anchorElNav === null ? undefined : anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
@@ -232,7 +232,7 @@ export default function Navbar() {
                 <Menu
                   sx={{ mt: '45px' }}
                   id="menu-appbar"
-                  anchorEl={anchorElUser}
+                  anchorEl={anchorElUser === null ? undefined : anchorElUser}
                   anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
@@ -287,7 +287,7 @@ export default function Navbar() {
                   <Menu
                     sx={{ mt: '45px' }}
                     id="menu-appbar"
-                    anchorEl={anchorElUser}
+                    anchorEl={anchorElUser || undefined}
                     anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'right',

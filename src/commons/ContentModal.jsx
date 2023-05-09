@@ -1,28 +1,59 @@
-import React, { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Grid, useMediaQuery } from '@mui/material';
-
-import { Link } from 'react-router-dom';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { Button, Grid, useMediaQuery } from '@mui/material';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFavorites } from '../state/favorites';
+import { customMessage } from '../utils/customMessage';
 
 export default function ContentModal({ content, onClose }) {
+  const dispatch = useDispatch();
   const { breakpoints } = useTheme();
   const isMd = useMediaQuery(breakpoints.up('md'));
+  const user = useSelector((state) => state.user);
+  const favoritesState = useSelector((state) => state.favorites);
+
+  const handleAddFav = async (e) => {
+    e.preventDefault();
+
+    if (!user.id)
+      return customMessage('error', 'You need to login into your Account');
+    try {
+      const response = await axios.post('/api/favorites/add', {
+        mediaId: content.id,
+        type: content.type,
+      });
+      const favorites = await axios.get('/api/favorites/', {});
+      dispatch(setFavorites(favorites.data));
+      return customMessage('success', response.data);
+    } catch (error) {
+      return customMessage('error', error.response.data);
+    }
+  };
+  const handleRemoveFav = async (e) => {
+    e.preventDefault();
+    if (!user.id)
+      return customMessage('error', 'You need to login into your Account');
+
+    try {
+      const response = await axios.delete('/api/favorites/delete', {
+        params: {
+          mediaId: content.id,
+        },
+      });
+      const favorites = await axios.get('/api/favorites/', {});
+      dispatch(setFavorites(favorites.data));
+      return customMessage('success', response.data);
+    } catch (error) {
+      return customMessage('error', error.response.data);
+    }
+  };
+  const isFavorite = (mediaId) => {
+    return favoritesState.some((favorite) => favorite.mediaId === mediaId);
+  };
 
   return (
     <>
@@ -94,6 +125,25 @@ export default function ContentModal({ content, onClose }) {
               >
                 {content.overview}
               </Typography>
+              <Box>
+                {isFavorite(content.id) ? (
+                  <Button
+                    variant="outlined"
+                    sx={{ color: 'white', borderColor: 'white' }}
+                    onClick={handleRemoveFav}
+                  >
+                    Remove From Favorites
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    sx={{ color: 'white', borderColor: 'white' }}
+                    onClick={handleAddFav}
+                  >
+                    Add To Favorites
+                  </Button>
+                )}
+              </Box>
             </Box>
           </Grid>
         </Modal>
@@ -110,7 +160,8 @@ ContentModal.propTypes = {
     release: PropTypes.string.isRequired,
     backdrop_path: PropTypes.string,
     image: PropTypes.string.isRequired,
+    type: PropTypes.string,
     // otras propiedades aquí
   }),
-  onClose: PropTypes,
+  onClose: PropTypes.func,
 };
