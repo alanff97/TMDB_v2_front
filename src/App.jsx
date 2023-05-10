@@ -7,6 +7,22 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { setMediaType } from './state/mediaType';
 import ContentModal from './commons/ContentModal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { Link } from '@mui/material';
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Created by '}
+      <Link color="inherit" href="https://github.com/alanff97">
+        Alan Figueroa
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 function App() {
   const [selectedContent, setSelectedContent] = useState(null);
@@ -54,6 +70,21 @@ function App() {
         content={selectedContent}
         onClose={() => setSelectedContent(null)}
       />
+      <Box
+        sx={{ bgcolor: 'background.paper', pt: 6, pb: 6, width: '100%' }}
+        component="footer"
+      >
+        <Typography variant="h6" align="center" gutterBottom>
+          TMDB Proyect
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="text.secondary"
+          component="p"
+        ></Typography>
+        <Copyright />
+      </Box>
     </div>
   );
 }
