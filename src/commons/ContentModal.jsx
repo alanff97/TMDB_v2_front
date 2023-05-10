@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFavorites } from '../state/favorites';
 import { customMessage } from '../utils/customMessage';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 export default function ContentModal({ content, onClose }) {
   const dispatch = useDispatch();
@@ -129,18 +131,20 @@ export default function ContentModal({ content, onClose }) {
                 {isFavorite(content.id) ? (
                   <Button
                     variant="outlined"
-                    sx={{ color: 'white', borderColor: 'white' }}
+                    sx={{ color: 'white', borderColor: 'white', gap: '1vh' }}
                     onClick={handleRemoveFav}
                   >
-                    Remove From Favorites
+                    Remove Favorite
+                    <RemoveCircleOutlineIcon />
                   </Button>
                 ) : (
                   <Button
                     variant="outlined"
-                    sx={{ color: 'white', borderColor: 'white' }}
+                    sx={{ color: 'white', borderColor: 'white', gap: '1vh' }}
                     onClick={handleAddFav}
                   >
-                    Add To Favorites
+                    Add Favorite
+                    <AddCircleOutlineIcon />
                   </Button>
                 )}
               </Box>
@@ -161,7 +165,6 @@ ContentModal.propTypes = {
     backdrop_path: PropTypes.string,
     image: PropTypes.string.isRequired,
     type: PropTypes.string,
-    // otras propiedades aquí
   }),
   onClose: PropTypes.func,
 };

@@ -40,7 +40,9 @@ export function useContent({ search }) {
             : '/public/404-poster.png',
           release: shows.first_air_date.split('-')[0],
           stars: shows.vote_average,
-          backdrop_path: imageBackPath + shows.backdrop_path,
+          backdrop_path: shows.backdrop_path
+            ? imageBackPath + shows.backdrop_path
+            : '/public/NotFoundBack.png',
           type: 'tv',
         }));
         action = setContent(mappedShows);
