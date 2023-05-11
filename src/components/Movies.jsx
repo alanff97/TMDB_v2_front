@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
+
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
+
 import MovieCard from '../commons/MovieCard';
 import ImageCarousel from './ImageCarousel';
+
 // eslint-disable-next-line
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,10 +19,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function ListOfMovies({ content, onClick }) {
+  const location = useLocation();
+  const containSearch = location.pathname.includes('/search');
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <ImageCarousel content={content} />
+        {containSearch ? null : <ImageCarousel />}
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
@@ -43,10 +49,24 @@ ListOfMovies.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string,
+      name: PropTypes.string,
       release: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
+      overview: PropTypes.string.isRequired,
+      backdrop_path: PropTypes.string.isRequired,
     })
   ).isRequired,
+  trending: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string,
+      name: PropTypes.string,
+      release: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      overview: PropTypes.string.isRequired,
+      backdrop_path: PropTypes.string.isRequired,
+    })
+  ),
   onClick: PropTypes.func,
 };
 

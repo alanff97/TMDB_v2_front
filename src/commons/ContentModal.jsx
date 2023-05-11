@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { customMessage } from '../utils/customMessage';
+
+import { setFavorites } from '../state/favorites';
+
 import { useTheme } from '@mui/material/styles';
+import { Button, Grid, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Button, Grid, useMediaQuery } from '@mui/material';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFavorites } from '../state/favorites';
-import { customMessage } from '../utils/customMessage';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
@@ -22,7 +24,7 @@ export default function ContentModal({ content, onClose }) {
     e.preventDefault();
 
     if (!user.id)
-      return customMessage('error', 'You need to login into your Account');
+      return customMessage('error', 'You need to login into your account');
     try {
       const response = await axios.post('/api/favorites/add', {
         mediaId: content.id,

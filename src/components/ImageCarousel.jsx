@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useSelector } from 'react-redux';
 
 const theme = createTheme({
   breakpoints: {
@@ -23,7 +24,8 @@ const theme = createTheme({
   },
 });
 
-function ImageCarousel({ content }) {
+function ImageCarousel() {
+  const trending = useSelector((state) => state.trending);
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -37,7 +39,7 @@ function ImageCarousel({ content }) {
         }}
       >
         <Carousel>
-          {content.map((content, i) => (
+          {trending?.map((content, i) => (
             <Card
               key={i}
               sx={{
@@ -90,7 +92,7 @@ function ImageCarousel({ content }) {
   );
 }
 ImageCarousel.propTypes = {
-  content: PropTypes.arrayOf(
+  trending: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string,
@@ -100,6 +102,6 @@ ImageCarousel.propTypes = {
       backdrop_path: PropTypes.string.isRequired,
       overview: PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
 };
 export default ImageCarousel;

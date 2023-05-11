@@ -8,6 +8,7 @@ import searchReducer from './search';
 import userReducer from './user';
 import mediaReducer from './mediaType';
 import favsReducer from './favorites';
+import trendingReducer from './trending';
 
 const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
@@ -17,6 +18,7 @@ const store = configureStore({
     search: searchReducer,
     user: userReducer,
     favorites: favsReducer,
+    trending: trendingReducer,
   },
 });
 

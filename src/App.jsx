@@ -27,6 +27,7 @@ function Copyright() {
 function App() {
   const [selectedContent, setSelectedContent] = useState(null);
   const content = useSelector((state) => state.content);
+
   const dispatch = useDispatch();
   const location = useLocation();
 
