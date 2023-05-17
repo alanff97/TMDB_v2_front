@@ -19,7 +19,6 @@ export default function ContentModal({ content, onClose }) {
   const isMd = useMediaQuery(breakpoints.up('md'));
   const user = useSelector((state) => state.user);
   const favoritesState = useSelector((state) => state.favorites);
-  console.log('consologeo el content', content);
 
   const handleAddFav = async (e) => {
     e.preventDefault();
@@ -41,8 +40,13 @@ export default function ContentModal({ content, onClose }) {
           withCredentials: true,
         }
       );
+      const favorites = response.data.data.map((item) => ({
+        ...item,
+        id: item.mediaId,
+      }));
 
-      await dispatch(setFavorites(response.data.data));
+      dispatch(setFavorites(favorites));
+      localStorage.setItem('favorites', JSON.stringify(favorites));
       return customMessage('success', response.data.message);
     } catch (error) {
       return console.log(error);
@@ -59,8 +63,13 @@ export default function ContentModal({ content, onClose }) {
           mediaId: content.id,
         },
       });
+      const favorites = response.data.data.map((item) => ({
+        ...item,
+        id: item.mediaId,
+      }));
 
-      dispatch(setFavorites(response.data.data));
+      dispatch(setFavorites(favorites));
+      localStorage.setItem('favorites', JSON.stringify(favorites));
       return customMessage('success', response.data.message);
     } catch (error) {
       return customMessage('error', error.response.data);

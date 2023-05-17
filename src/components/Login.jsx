@@ -48,7 +48,12 @@ export default function Login() {
       try {
         cookie = await axios.post('api/user/login', formData);
         dispatch(setUser(cookie.data.user));
-        dispatch(setFavorites(cookie.data.favorites));
+        const favorites = cookie.data.favorites.map((item) => ({
+          ...item,
+          id: item.mediaId,
+        }));
+        dispatch(setFavorites(favorites));
+        localStorage.setItem('favorites', JSON.stringify(favorites));
         customMessage('success', 'Session Started!');
         navigate('/');
       } catch (error) {

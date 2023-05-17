@@ -1,22 +1,10 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 export const setFavorites = createAction('SET_FAVORITES');
 
-const fetchFavorites = async () => {
-  try {
-    const response = await axios.get('/api/favorites');
-    const favorites = response.data.map((item) => ({
-      ...item,
-      id: item.mediaId,
-    }));
-    return favorites;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-const initialState = (await fetchFavorites()) || [];
+const storedFavorites = localStorage.getItem('favorites');
+
+const initialState = storedFavorites ? JSON.parse(storedFavorites) : [];
 
 const favsReducer = createReducer(initialState, {
   [setFavorites]: (state, action) => action.payload,

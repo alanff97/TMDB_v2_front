@@ -83,6 +83,7 @@ export default function Navbar() {
   const handleLogout = async (event) => {
     event.preventDefault();
     await axios.post('/api/user/logout', {});
+    localStorage.clear();
     dispatch(logOut());
     customMessage('success', 'Session Ended');
   };
