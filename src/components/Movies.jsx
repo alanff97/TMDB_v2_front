@@ -24,7 +24,7 @@ export function ListOfMovies({ content, onClick }) {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {containSearch ? null : <ImageCarousel />}
+        {containSearch ? null : <ImageCarousel onClick={onClick} />}
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container

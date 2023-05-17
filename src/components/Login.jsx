@@ -17,6 +17,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import Input from '../commons/Input';
 import { customMessage } from '../utils/customMessage';
+import { setFavorites } from '../state/favorites';
 
 export default function Login() {
   const initialFormState = {
@@ -45,10 +46,9 @@ export default function Login() {
 
     if (validEmail) {
       try {
-        cookie = await axios.post('api/user/login', formData, {
-          withCredentials: true,
-        });
-        dispatch(setUser(cookie.data));
+        cookie = await axios.post('api/user/login', formData);
+        dispatch(setUser(cookie.data.user));
+        dispatch(setFavorites(cookie.data.favorites));
         customMessage('success', 'Session Started!');
         navigate('/');
       } catch (error) {

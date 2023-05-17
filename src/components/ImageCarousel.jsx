@@ -24,7 +24,7 @@ const theme = createTheme({
   },
 });
 
-function ImageCarousel() {
+function ImageCarousel({ onClick }) {
   const trending = useSelector((state) => state.trending);
   return (
     <ThemeProvider theme={theme}>
@@ -36,11 +36,16 @@ function ImageCarousel() {
           mt: 2,
           mb: 2,
           p: 2,
+          bg: 'background-paper',
         }}
       >
+        <Typography variant="h4" gutterBottom sx={{ ml: 2, color: '#5d5d5f' }}>
+          TRENDING
+        </Typography>
         <Carousel>
           {trending?.map((content, i) => (
             <Card
+              onClick={() => onClick(content)}
               key={i}
               sx={{
                 display: 'flex',
@@ -103,5 +108,6 @@ ImageCarousel.propTypes = {
       overview: PropTypes.string.isRequired,
     })
   ),
+  onClick: PropTypes.func,
 };
 export default ImageCarousel;

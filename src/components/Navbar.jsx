@@ -151,12 +151,15 @@ export default function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <Link to="/movie">
+              <Link
+                to="/movie"
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
                 <MenuItem onClick={handleClickMovie}>
                   <Typography textAlign="center">Movies</Typography>
                 </MenuItem>
               </Link>
-              <Link to="/tv">
+              <Link to="/tv" style={{ textDecoration: 'none', color: 'black' }}>
                 <MenuItem onClick={handleClickTv}>
                   <Typography textAlign="center">Tv Shows</Typography>
                 </MenuItem>
@@ -231,7 +234,7 @@ export default function Navbar() {
                 </Tooltip>
                 <Menu
                   sx={{ mt: '45px' }}
-                  id="menu-appbar"
+                  id="menu-user"
                   anchorEl={anchorElUser === null ? undefined : anchorElUser}
                   anchorOrigin={{
                     vertical: 'top',
@@ -245,12 +248,14 @@ export default function Navbar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Account</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Favorites</Typography>
-                  </MenuItem>
+                  <Link
+                    to="/favorites"
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">Favorites</Typography>
+                    </MenuItem>
+                  </Link>
                   <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
@@ -286,7 +291,7 @@ export default function Navbar() {
                   </Tooltip>
                   <Menu
                     sx={{ mt: '45px' }}
-                    id="menu-appbar"
+                    id="menu-login"
                     anchorEl={anchorElUser || undefined}
                     anchorOrigin={{
                       vertical: 'top',

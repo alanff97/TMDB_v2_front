@@ -1,11 +1,15 @@
 import './App.css';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route, useLocation } from 'react-router-dom';
+
+import { setMediaType } from './state/mediaType';
+
+import Favorites from './components/Favorites';
 import Login from './components/Login';
 import Register from './components/Register';
 import { Movie } from './components/Movies';
-import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { setMediaType } from './state/mediaType';
+
 import ContentModal from './commons/ContentModal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -63,29 +67,36 @@ function App() {
             path="/tv"
             element={<Movie content={content} onClick={setSelectedContent} />}
           />
+          <Route
+            path="/favorites"
+            element={<Favorites onClick={setSelectedContent} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </main>
+
       <ContentModal
         content={selectedContent}
         onClose={() => setSelectedContent(null)}
       />
-      <Box
-        sx={{ bgcolor: 'background.paper', pt: 6, pb: 6, width: '100%' }}
-        component="footer"
-      >
-        <Typography variant="h6" align="center" gutterBottom>
-          TMDB Proyect
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        ></Typography>
-        <Copyright />
-      </Box>
+      <footer>
+        <Box
+          sx={{ bgcolor: '#fcfcfc', pt: 6, pb: 6, width: '100%' }}
+          component="footer"
+        >
+          <Typography variant="h6" align="center" gutterBottom>
+            TMDB Proyect
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            color="text.secondary"
+            component="p"
+          ></Typography>
+          <Copyright />
+        </Box>
+      </footer>
     </div>
   );
 }

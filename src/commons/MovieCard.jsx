@@ -27,8 +27,9 @@ MovieCard.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string,
     name: PropTypes.string,
-    release: PropTypes.string.isRequired,
+    release: PropTypes.string,
     image: PropTypes.string.isRequired,
+    backdrop_path: PropTypes.string,
   }).isRequired,
   onClick: PropTypes.func,
 };

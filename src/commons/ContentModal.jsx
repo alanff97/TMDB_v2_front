@@ -26,15 +26,25 @@ export default function ContentModal({ content, onClose }) {
     if (!user.id)
       return customMessage('error', 'You need to login into your account');
     try {
-      const response = await axios.post('/api/favorites/add', {
-        mediaId: content.id,
-        type: content.type,
-      });
-      const favorites = await axios.get('/api/favorites/', {});
-      dispatch(setFavorites(favorites.data));
-      return customMessage('success', response.data);
+      const response = await axios.post(
+        '/api/favorites/add',
+        {
+          mediaId: content.id,
+          type: content.type,
+          title: content.title || content.name,
+          overview: content.overview,
+          image: content.image,
+          backdrop_path: content.backdrop_path,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      await dispatch(setFavorites(response.data.data));
+      return customMessage('success', response.data.message);
     } catch (error) {
-      return customMessage('error', error.response.data);
+      return console.log(error);
     }
   };
   const handleRemoveFav = async (e) => {
@@ -48,15 +58,15 @@ export default function ContentModal({ content, onClose }) {
           mediaId: content.id,
         },
       });
-      const favorites = await axios.get('/api/favorites/', {});
-      dispatch(setFavorites(favorites.data));
-      return customMessage('success', response.data);
+
+      dispatch(setFavorites(response.data.data));
+      return customMessage('success', response.data.message);
     } catch (error) {
       return customMessage('error', error.response.data);
     }
   };
   const isFavorite = (mediaId) => {
-    return favoritesState.some((favorite) => favorite.mediaId === mediaId);
+    return favoritesState?.some((favorite) => favorite.mediaId === mediaId);
   };
 
   return (
