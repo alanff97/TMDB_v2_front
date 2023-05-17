@@ -6,7 +6,10 @@ export const setFavorites = createAction('SET_FAVORITES');
 const fetchFavorites = async () => {
   try {
     const response = await axios.get('/api/favorites');
-    const favorites = response.data;
+    const favorites = response.data.map((item) => ({
+      ...item,
+      id: item.mediaId,
+    }));
     return favorites;
   } catch (error) {
     console.log(error);

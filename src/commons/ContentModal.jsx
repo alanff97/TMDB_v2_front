@@ -19,6 +19,7 @@ export default function ContentModal({ content, onClose }) {
   const isMd = useMediaQuery(breakpoints.up('md'));
   const user = useSelector((state) => state.user);
   const favoritesState = useSelector((state) => state.favorites);
+  console.log('consologeo el content', content);
 
   const handleAddFav = async (e) => {
     e.preventDefault();
@@ -173,10 +174,11 @@ ContentModal.propTypes = {
     title: PropTypes.string,
     name: PropTypes.string,
     overview: PropTypes.string,
-    release: PropTypes.string.isRequired,
+    release: PropTypes.string,
     backdrop_path: PropTypes.string,
     image: PropTypes.string.isRequired,
     type: PropTypes.string,
+    mediaId: PropTypes.number,
   }),
   onClose: PropTypes.func,
 };
