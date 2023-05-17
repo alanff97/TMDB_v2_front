@@ -1,19 +1,22 @@
 import { createAction, createReducer } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 export const setFavorites = createAction('SET_FAVORITES');
-export const removeFav = createAction('REMOVE_FAVORITES');
 
-const token = Cookies.get('token');
-
-const favorites = token ? jwtDecode(token).user.favorites : [];
-
-const initialState = favorites;
+const fetchFavorites = async () => {
+  try {
+    const response = await axios.get('/api/favorites');
+    const favorites = response.data;
+    return favorites;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+const initialState = (await fetchFavorites()) || [];
 
 const favsReducer = createReducer(initialState, {
-  [setFavorites]: (state, action) => (state = action.payload),
-  [removeFav]: (state, action) => (state = {}),
+  [setFavorites]: (state, action) => action.payload,
 });
 
 export default favsReducer;
